@@ -40,7 +40,7 @@ public class TimeTrackerServiceImp implements TimeTrackerService{
 		        LocalDateTime fechaFinDateTime = LocalDateTime.parse(fechaFin, formatter);
 		        long horasLaboradas = fechaFinDateTime.getHour() - fechaInicioDateTime.getHour();
 		        
-		        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm");
+		        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		        Date initialDate = format.parse(fechaInicio);
 		        
 		        if(fechaFinDateTime.isAfter(fechaInicioDateTime)) {
