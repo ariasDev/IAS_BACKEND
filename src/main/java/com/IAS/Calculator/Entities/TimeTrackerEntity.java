@@ -35,22 +35,35 @@ public class TimeTrackerEntity {
 	@Column(name = "num_semana")
 	private int num_semana;
 	
-	@Column(name = "horas_registro")
-	private int horas_registro;
+	@Column(name = "horas_normales")
+	private int horas_normales;
+	
+	@Column(name = "horas_dominicales")
+	private int horas_dominicales;
+
+	@Column(name = "horas_normales_extra")
+	private int horas_normales_extra;
+	
+	@Column(name = "horas_dominicales_extra")
+	private int horas_dominicales_extra;
 
 	public TimeTrackerEntity() {
 		super();
 	}
 
 	public TimeTrackerEntity(String id_servicio, String id_tecnico, String fecha_inicio, String fecha_fin,
-			int num_semana, int horas_registro) {
+			int num_semana, int horas_normales, int horas_dominicales, int horas_normales_extra,
+			int horas_dominicales_extra) {
 		super();
 		this.id_servicio = id_servicio;
 		this.id_tecnico = id_tecnico;
 		this.fecha_inicio = fecha_inicio;
 		this.fecha_fin = fecha_fin;
 		this.num_semana = num_semana;
-		this.horas_registro = horas_registro;
+		this.horas_normales = horas_normales;
+		this.horas_dominicales = horas_dominicales;
+		this.horas_normales_extra = horas_normales_extra;
+		this.horas_dominicales_extra = horas_dominicales_extra;
 	}
 
 	public String getId_servicio() {
@@ -93,12 +106,39 @@ public class TimeTrackerEntity {
 		this.num_semana = num_semana;
 	}
 
-	public int getHoras_registro() {
-		return horas_registro;
+	public int getHoras_normales() {
+		return horas_normales;
 	}
 
-	public void setHoras_registro(int horas_registro) {
-		this.horas_registro = horas_registro;
+	public void setHoras_normales(int horas_normales) {
+		this.horas_normales = horas_normales;
 	}
+
+	public int getHoras_dominicales() {
+		return horas_dominicales;
+	}
+
+	public void setHoras_dominicales(int horas_dominicales) {
+		this.horas_dominicales = horas_dominicales;
+	}
+
+	public int getHoras_normales_extra() {
+		return horas_normales_extra;
+	}
+
+	public void setHoras_normales_extra(int horas_normales_extra) {
+		this.horas_normales_extra = horas_normales_extra;
+	}
+
+	public int getHoras_dominicales_extra() {
+		return horas_dominicales_extra;
+	}
+
+	public void setHoras_dominicales_extra(int horas_dominicales_extra) {
+		this.horas_dominicales_extra = horas_dominicales_extra;
+	}
+
+	
+	
 	
 }

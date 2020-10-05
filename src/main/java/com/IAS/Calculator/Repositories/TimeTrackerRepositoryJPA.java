@@ -12,8 +12,8 @@ import com.IAS.Calculator.Entities.TimeTrackerEntity;
 public interface TimeTrackerRepositoryJPA extends JpaRepository<TimeTrackerEntity, String> {
 	
 	@Query(
-			value = "SELECT * FROM reports u WHERE u.technician_identification = ?1 and u.week =?2", 
+			value = "SELECT * FROM time_tracker t WHERE t.id_tecnico = ?1 and t.num_semana =?2 and t.fecha_inicio like ?3", 
 			nativeQuery = true)
-	List<TimeTrackerEntity> findByIdentification(String id, int week);
+	List<TimeTrackerEntity> consultService(String id, int week, String currentYear);
 
 }
