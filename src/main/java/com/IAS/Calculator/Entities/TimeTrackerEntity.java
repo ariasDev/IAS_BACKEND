@@ -18,9 +18,7 @@ import org.hibernate.annotations.Type;
 public class TimeTrackerEntity {
 	
 	@Id
-    @GeneratedValue(generator = "UUID")
-    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
-	@Column(updatable = false, nullable = false)
+	@Column(name = "id_servicio")
 	private String id_servicio;
 	
 	@Column(name = "id_tecnico")

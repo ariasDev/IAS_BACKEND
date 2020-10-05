@@ -29,7 +29,10 @@ public class TimeTrackerServiceImp implements TimeTrackerService{
 	@Override
 	public HashMap<String, Object> saveNewService(TimeTrackerEntity timeTrackerEntity) {
 		try {
-			if(timeTrackerEntity.getId_tecnico().length() != 0 && timeTrackerEntity.getFecha_inicio().length() != 0 && timeTrackerEntity.getFecha_fin().length() != 0) {
+			if(
+					timeTrackerEntity.getId_servicio().length() != 0  && timeTrackerEntity.getId_tecnico().length() != 0 
+					&& timeTrackerEntity.getFecha_inicio().length() != 0 && timeTrackerEntity.getFecha_fin().length() != 0
+			) {
 				String fechaInicio = timeTrackerEntity.getFecha_inicio();
 				String fechaFin = timeTrackerEntity.getFecha_fin();
 		        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
@@ -41,9 +44,6 @@ public class TimeTrackerServiceImp implements TimeTrackerService{
 		        Date initialDate = format.parse(fechaInicio);
 		        
 		        if(fechaFinDateTime.isAfter(fechaInicioDateTime)) {
-
-			        	//timeTrackerEntity.setHoras_registro((int) diff);
-
 			        	Calendar calendar = new GregorianCalendar();
 						calendar.setTime(initialDate);
 						System.out.println("dia de la semana: " + calendar.get(Calendar.DAY_OF_WEEK));
