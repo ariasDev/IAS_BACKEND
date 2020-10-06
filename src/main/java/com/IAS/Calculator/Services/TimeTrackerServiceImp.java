@@ -1,5 +1,6 @@
 package com.IAS.Calculator.Services;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -35,21 +36,20 @@ public class TimeTrackerServiceImp implements TimeTrackerService{
 			) {
 				String fechaInicio = timeTrackerEntity.getFecha_inicio();
 				String fechaFin = timeTrackerEntity.getFecha_fin();
-		        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-		        LocalDateTime fechaInicioDateTime = LocalDateTime.parse(fechaInicio, formatter);
-		        LocalDateTime fechaFinDateTime = LocalDateTime.parse(fechaFin, formatter);
-		        long horasLaboradas = fechaFinDateTime.getHour() - fechaInicioDateTime.getHour();
 		        
-		        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 		        Date initialDate = format.parse(fechaInicio);
+		        Date finalDate = format.parse(fechaFin);
 		        
-		        if(fechaFinDateTime.isAfter(fechaInicioDateTime)) {
+		        long horasLaboradas = finalDate.getHours() - initialDate.getHours();
+		        
+		        if(finalDate.after(initialDate)) {
 			        	Calendar calendar = new GregorianCalendar();
 						calendar.setTime(initialDate);
 						System.out.println("dia de la semana: " + calendar.get(Calendar.DAY_OF_WEEK));
 						
 						if(calendar.get(Calendar.DAY_OF_WEEK) >= 2 && calendar.get(Calendar.DAY_OF_WEEK) <= 7) {
-							if(fechaInicioDateTime.getHour() >= 7 && fechaFinDateTime.getHour() <= 20) {
+							if(initialDate.getHours()>= 7 && finalDate.getHours() <= 20) {
 								timeTrackerEntity.setHoras_normales((int) horasLaboradas);
 							}else {
 								timeTrackerEntity.setHoras_normales_extra((int) horasLaboradas);
@@ -85,7 +85,7 @@ public class TimeTrackerServiceImp implements TimeTrackerService{
 		} catch (Exception e) {
 			HashMap<String, Object> responseHasMap = new HashMap<String, Object>();
         	HashMap<String, Object> responseErrorHasMap = new HashMap<String, Object>();
-			responseErrorHasMap.put("error", "Algo salió mal");
+			responseErrorHasMap.put("error", e.getLocalizedMessage());
 			responseHasMap.put("response", responseErrorHasMap);
 			return responseHasMap;
 		}
@@ -95,13 +95,29 @@ public class TimeTrackerServiceImp implements TimeTrackerService{
 	public HashMap<String, Object> consultService(String id, int week) {
 		try {
 			if(id.length() != 0 && week > 0) {
+				int horasNormales = 0;
+				int horasDominicales = 0;
+				int horasNormalesExtra = 0;
+				int horasDominicalesExtra = 0;
+				
 				Calendar c1 = Calendar.getInstance();
 				int currentYearInt = c1.get(Calendar.YEAR);
 				String currentYear = "%" + currentYearInt + "%";
 				List<TimeTrackerEntity> responseRepository = timeTrackerRepositoryJPA.consultService(id, week, currentYear);
+				for (int i = 0; i < responseRepository.size(); i++) {
+					TimeTrackerEntity servicio = responseRepository.get(i);
+					horasNormales = horasNormales + servicio.getHoras_normales();
+					horasDominicales = horasDominicales + servicio.getHoras_dominicales();
+					horasNormalesExtra = horasNormalesExtra + servicio.getHoras_normales_extra();
+					horasDominicalesExtra = horasDominicalesExtra + servicio.getHoras_dominicales_extra();
+				}
 				HashMap<String, Object> responseHasMap = new HashMap<String, Object>();
 				HashMap<String, Object> dataHasMap = new HashMap<String, Object>();
 				dataHasMap.put("data", responseRepository);
+				dataHasMap.put("horasNormales", horasNormales);
+				dataHasMap.put("horasDominicales", horasDominicales);
+				dataHasMap.put("horasNormalesExtra", horasNormalesExtra);
+				dataHasMap.put("horasDominicalesExtra", horasDominicalesExtra);
 				responseHasMap.put("response", dataHasMap);
 				return responseHasMap;
 			}else {

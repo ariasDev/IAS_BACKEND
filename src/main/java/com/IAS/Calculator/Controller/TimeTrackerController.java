@@ -26,6 +26,7 @@ public class TimeTrackerController {
 	
 	@PostMapping(path = "/save",produces = "application/json")
 	public HashMap<String, Object> saveNewService (@RequestBody TimeTrackerEntity timeTrackerEntity) {
+		System.out.println(timeTrackerEntity.getFecha_inicio());
 		HashMap<String, Object> serviceResponse =  timeTrackerService.saveNewService(timeTrackerEntity);
 		return serviceResponse;
 	}
