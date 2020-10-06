@@ -34,8 +34,16 @@ public class TimeTrackerController {
 	@GetMapping(path = "/consultService")
 	public HashMap<String, Object> consultService(@RequestParam String id, @RequestParam int week)
 	{
-		HashMap<String, Object> serviceResponse =  timeTrackerService.consultService(id, week);
-		return serviceResponse;
+		try {
+			HashMap<String, Object> serviceResponse =  timeTrackerService.consultService(id, week);
+			return serviceResponse;
+		} catch (Exception e) {
+			HashMap<String, Object> responseHasMap = new HashMap<String, Object>();
+        	HashMap<String, Object> responseErrorHasMap = new HashMap<String, Object>();
+			responseErrorHasMap.put("error", e.getLocalizedMessage());
+			responseHasMap.put("response", responseErrorHasMap);
+			return responseHasMap;
+		}
 	}
 
 }

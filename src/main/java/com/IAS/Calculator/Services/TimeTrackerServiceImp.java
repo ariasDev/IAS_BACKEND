@@ -104,22 +104,31 @@ public class TimeTrackerServiceImp implements TimeTrackerService{
 				int currentYearInt = c1.get(Calendar.YEAR);
 				String currentYear = "%" + currentYearInt + "%";
 				List<TimeTrackerEntity> responseRepository = timeTrackerRepositoryJPA.consultService(id, week, currentYear);
-				for (int i = 0; i < responseRepository.size(); i++) {
-					TimeTrackerEntity servicio = responseRepository.get(i);
-					horasNormales = horasNormales + servicio.getHoras_normales();
-					horasDominicales = horasDominicales + servicio.getHoras_dominicales();
-					horasNormalesExtra = horasNormalesExtra + servicio.getHoras_normales_extra();
-					horasDominicalesExtra = horasDominicalesExtra + servicio.getHoras_dominicales_extra();
-				}
+				
 				HashMap<String, Object> responseHasMap = new HashMap<String, Object>();
-				HashMap<String, Object> dataHasMap = new HashMap<String, Object>();
-				dataHasMap.put("data", responseRepository);
-				dataHasMap.put("horasNormales", horasNormales);
-				dataHasMap.put("horasDominicales", horasDominicales);
-				dataHasMap.put("horasNormalesExtra", horasNormalesExtra);
-				dataHasMap.put("horasDominicalesExtra", horasDominicalesExtra);
-				responseHasMap.put("response", dataHasMap);
-				return responseHasMap;
+				if(responseRepository.size() != 0) {
+					for (int i = 0; i < responseRepository.size(); i++) {
+						TimeTrackerEntity servicio = responseRepository.get(i);
+						horasNormales = horasNormales + servicio.getHoras_normales();
+						horasDominicales = horasDominicales + servicio.getHoras_dominicales();
+						horasNormalesExtra = horasNormalesExtra + servicio.getHoras_normales_extra();
+						horasDominicalesExtra = horasDominicalesExtra + servicio.getHoras_dominicales_extra();
+					}
+					HashMap<String, Object> dataHasMap = new HashMap<String, Object>();
+					dataHasMap.put("data", responseRepository);
+					dataHasMap.put("horasNormales", horasNormales);
+					dataHasMap.put("horasDominicales", horasDominicales);
+					dataHasMap.put("horasNormalesExtra", horasNormalesExtra);
+					dataHasMap.put("horasDominicalesExtra", horasDominicalesExtra);
+					responseHasMap.put("response", dataHasMap);
+					return responseHasMap;
+				} else {
+					HashMap<String, Object> dataHasMap = new HashMap<String, Object>();
+					dataHasMap.put("data", 0);
+					responseHasMap.put("response", dataHasMap);
+					return responseHasMap;
+				}
+				
 			}else {
 				HashMap<String, Object> responseHasMap = new HashMap<String, Object>();
 	        	HashMap<String, Object> responseErrorHasMap = new HashMap<String, Object>();
